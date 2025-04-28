@@ -15,7 +15,7 @@ real(8), intent(in), dimension(10000) :: xx
 real(8), dimension(10000) :: vi
 real(8), intent(out) :: V
 
-!$omp parallel do default(shared) private(i)
+!$omp parallel do default(shared) private(i) schedule(static)
 do i=1, 10000
     if (xx(i)**2 + xx(i)**3 .ge. 0) then
 
