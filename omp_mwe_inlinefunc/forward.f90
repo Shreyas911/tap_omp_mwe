@@ -18,16 +18,16 @@ real(8), intent(out) :: V
 
 !$omp parallel do default(shared) private(i, temp) schedule(static)
 do i=1, 10
-!    if (xx(i)**2 + xx(i)**3 .ge. 0) then
+    if (xx(i)**2 + xx(i)**3 .ge. 0) then
 
-        !! Inline function call
-        !vi(i) = 1.0 + xx(i)*dummy_func(xx(i))
+        ! Inline function call
+        vi(i) = 1.0 + xx(i)*dummy_func(xx(i))
 
         ! Not inline function call
         temp = dummy_func(xx(i))
         vi(i) = vi(i) + 1.0 + xx(i)*temp
 
-!    end if
+    end if
 end do
 !$omp end parallel do       
 
