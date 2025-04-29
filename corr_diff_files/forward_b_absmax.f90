@@ -69,11 +69,9 @@ CONTAINS
           CALL PUSHCONTROL1B(1)
         END IF
         IF (xx(i) .GE. 0.) THEN
-          CALL PUSHREAL8(x1)
           x1 = xx(i)
           CALL PUSHCONTROL1B(0)
         ELSE
-          CALL PUSHREAL8(x1)
           x1 = -xx(i)
           CALL PUSHCONTROL1B(1)
         END IF
@@ -119,10 +117,8 @@ CONTAINS
         END IF
         CALL POPCONTROL1B(branch)
         IF (branch .EQ. 0) THEN
-          CALL POPREAL8(x1)
           xxb(i) = xxb(i) + x1b
         ELSE
-          CALL POPREAL8(x1)
           xxb(i) = xxb(i) - x1b
         END IF
         CALL POPCONTROL1B(branch)
