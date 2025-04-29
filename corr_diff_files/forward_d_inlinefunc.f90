@@ -12,10 +12,10 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM_D(xx, xxd, v, vd)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xxd
-    REAL*8, DIMENSION(10000) :: vi
-    REAL*8, DIMENSION(10000) :: vid
+    REAL*8, DIMENSION(10), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10), INTENT(IN) :: xxd
+    REAL*8, DIMENSION(10) :: vi
+    REAL*8, DIMENSION(10) :: vid
     REAL*8 :: temp
     REAL*8 :: tempd
     REAL*8, INTENT(OUT) :: v
@@ -25,7 +25,7 @@ CONTAINS
     REAL*8 :: result1d
     vid = 0.0_8
 !$OMP PARALLEL DO DEFAULT(shared), PRIVATE(i, temp), PRIVATE(tempd), PRIVATE(result1), PRIVATE(result1d), SCHEDULE(static)
-    DO i=1,10000
+    DO i=1,10
       IF (xx(i)**2 + xx(i)**3 .GE. 0) THEN
 ! Inline function call
         result1d = DUMMY_FUNC_D(xx(i), xxd(i), result1)
@@ -44,14 +44,14 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM(xx, v)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10000) :: vi
+    REAL*8, DIMENSION(10), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10) :: vi
     REAL*8 :: temp
     REAL*8, INTENT(OUT) :: v
     INTRINSIC SUM
     REAL*8 :: result1
 !$OMP PARALLEL DO DEFAULT(shared), PRIVATE(i, temp), SCHEDULE(static)
-    DO i=1,10000
+    DO i=1,10
       IF (xx(i)**2 + xx(i)**3 .GE. 0) THEN
 ! Inline function call
         result1 = DUMMY_FUNC(xx(i))

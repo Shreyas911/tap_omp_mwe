@@ -12,16 +12,16 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM_D(xx, xxd, v, vd)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xxd
-    REAL*8, DIMENSION(10000) :: vi
-    REAL*8, DIMENSION(10000) :: vid
+    REAL*8, DIMENSION(10), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10), INTENT(IN) :: xxd
+    REAL*8, DIMENSION(10) :: vi
+    REAL*8, DIMENSION(10) :: vid
     REAL*8, INTENT(OUT) :: v
     REAL*8, INTENT(OUT) :: vd
     INTRINSIC SUM
     vid = 0.0_8
 !$OMP PARALLEL DO DEFAULT(shared), PRIVATE(i), SCHEDULE(static)
-    DO i=1,10000
+    DO i=1,10
       vid(i) = xxd(i)
       vi(i) = xx(i) + 1.0
     END DO
@@ -32,12 +32,12 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM(xx, v)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10000) :: vi
+    REAL*8, DIMENSION(10), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10) :: vi
     REAL*8, INTENT(OUT) :: v
     INTRINSIC SUM
 !$OMP PARALLEL DO DEFAULT(shared), PRIVATE(i), SCHEDULE(static)
-    DO i=1,10000
+    DO i=1,10
       vi(i) = xx(i) + 1.0
     END DO
     v = SUM(vi)

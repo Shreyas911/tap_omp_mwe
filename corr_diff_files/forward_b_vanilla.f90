@@ -12,17 +12,17 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM_B(xx, xxb, v, vb)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10000) :: xxb
-    REAL*8, DIMENSION(10000) :: vi
-    REAL*8, DIMENSION(10000) :: vib
+    REAL*8, DIMENSION(10), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10) :: xxb
+    REAL*8, DIMENSION(10) :: vi
+    REAL*8, DIMENSION(10) :: vib
     REAL*8 :: v
     REAL*8 :: vb
     INTRINSIC SUM
     INTEGER :: chunk_start
     INTEGER :: chunk_end
 !$OMP PARALLEL DEFAULT(shared), PRIVATE(i), PRIVATE(chunk_start, chunk_end)
-    CALL GETSTATICSCHEDULE(1, 10000, 1, chunk_start, chunk_end)
+    CALL GETSTATICSCHEDULE(1, 10, 1, chunk_start, chunk_end)
     DO i=chunk_start,chunk_end
       vi(i) = xx(i) + 1.0
     END DO
@@ -32,7 +32,7 @@ CONTAINS
     xxb = 0.0_8
 !$OMP PARALLEL DEFAULT(shared), PRIVATE(i), PRIVATE(chunk_end, chunk_start)
 !    xxb = 0.0_8
-    CALL GETSTATICSCHEDULE(1, 10000, 1, chunk_start, chunk_end)
+    CALL GETSTATICSCHEDULE(1, 10, 1, chunk_start, chunk_end)
     DO i=chunk_end,chunk_start,-1
       xxb(i) = xxb(i) + vib(i)
       vib(i) = 0.0_8
@@ -44,12 +44,12 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM(xx, v)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10000) :: vi
+    REAL*8, DIMENSION(10), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10) :: vi
     REAL*8, INTENT(OUT) :: v
     INTRINSIC SUM
 !$OMP PARALLEL DO DEFAULT(shared), PRIVATE(i), SCHEDULE(static)
-    DO i=1,10000
+    DO i=1,10
       vi(i) = xx(i) + 1.0
     END DO
     v = SUM(vi)

@@ -12,10 +12,10 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM_B(xx, xxb, v, vb)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10000) :: xxb
-    REAL*8, DIMENSION(10000) :: vi
-    REAL*8, DIMENSION(10000) :: vib
+    REAL*8, DIMENSION(10), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10) :: xxb
+    REAL*8, DIMENSION(10) :: vi
+    REAL*8, DIMENSION(10) :: vib
     REAL*8 :: v
     REAL*8 :: vb
     INTRINSIC SIN
@@ -36,7 +36,7 @@ CONTAINS
     INTEGER :: chunk_start
     INTEGER :: chunk_end
 !$OMP PARALLEL DEFAULT(shared), PRIVATE(i), PRIVATE(abs0, max1, abs1, max2, chunk_start, chunk_end)
-    CALL GETSTATICSCHEDULE(1, 10000, 1, chunk_start, chunk_end)
+    CALL GETSTATICSCHEDULE(1, 10, 1, chunk_start, chunk_end)
     DO i=chunk_start,chunk_end
       IF (xx(i)**2 + xx(i)**3 .GE. 0) THEN
 ! sin function
@@ -101,7 +101,7 @@ CONTAINS
     CALL POPREAL8(max2)
     CALL POPREAL8(abs1)
     xxb = 0.0_8
-    CALL GETSTATICSCHEDULE(1, 10000, 1, chunk_start, chunk_end)
+    CALL GETSTATICSCHEDULE(1, 10, 1, chunk_start, chunk_end)
     DO i=chunk_end,chunk_start,-1
       CALL POPCONTROL1B(branch)
       IF (branch .NE. 0) THEN
@@ -150,8 +150,8 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM(xx, v)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10000) :: vi
+    REAL*8, DIMENSION(10), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10) :: vi
     REAL*8, INTENT(OUT) :: v
     INTRINSIC SIN
     INTRINSIC ABS
@@ -163,7 +163,7 @@ CONTAINS
     REAL*8 :: abs1
     REAL*8 :: max2
 !$OMP PARALLEL DO DEFAULT(shared), PRIVATE(i), SCHEDULE(static)
-    DO i=1,10000
+    DO i=1,10
       IF (xx(i)**2 + xx(i)**3 .GE. 0) THEN
 ! sin function
         vi(i) = SIN(xx(i))

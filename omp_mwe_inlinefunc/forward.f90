@@ -11,23 +11,23 @@ subroutine forward_problem(xx,V)
 implicit none
 
 integer :: i
-real(8), intent(in), dimension(10000) :: xx
-real(8), dimension(10000) :: vi
+real(8), intent(in), dimension(10) :: xx
+real(8), dimension(10) :: vi
 real(8) :: temp
 real(8), intent(out) :: V
 
 !$omp parallel do default(shared) private(i, temp) schedule(static)
-do i=1, 10000
-    if (xx(i)**2 + xx(i)**3 .ge. 0) then
+do i=1, 10
+!    if (xx(i)**2 + xx(i)**3 .ge. 0) then
 
-        ! Inline function call
-        vi(i) = 1.0 + xx(i)*dummy_func(xx(i))
+        !! Inline function call
+        !vi(i) = 1.0 + xx(i)*dummy_func(xx(i))
 
         ! Not inline function call
         temp = dummy_func(xx(i))
         vi(i) = vi(i) + 1.0 + xx(i)*temp
 
-    end if
+!    end if
 end do
 !$omp end parallel do       
 
