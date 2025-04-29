@@ -12,10 +12,10 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM_D(xx, xxd, v, vd)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10), INTENT(IN) :: xxd
-    REAL*8, DIMENSION(10) :: vi
-    REAL*8, DIMENSION(10) :: vid
+    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10000), INTENT(IN) :: xxd
+    REAL*8, DIMENSION(10000) :: vi
+    REAL*8, DIMENSION(10000) :: vid
     REAL*8, INTENT(OUT) :: v
     REAL*8, INTENT(OUT) :: vd
     INTRINSIC SIN
@@ -34,7 +34,7 @@ CONTAINS
     REAL*8 :: max2d
     vid = 0.0_8
 !$OMP PARALLEL DO DEFAULT(shared), PRIVATE(i), PRIVATE(abs0, max1, abs1, max2), PRIVATE(abs0d, max1d, abs1d, max2d, x1, x1d), SCHEDULE(static)
-    DO i=1,10
+    DO i=1,10000
       IF (xx(i)**2 + xx(i)**3 .GE. 0) THEN
 ! sin function
         vid(i) = COS(xx(i))*xxd(i)
@@ -92,8 +92,8 @@ CONTAINS
   SUBROUTINE FORWARD_PROBLEM(xx, v)
     IMPLICIT NONE
     INTEGER :: i
-    REAL*8, DIMENSION(10), INTENT(IN) :: xx
-    REAL*8, DIMENSION(10) :: vi
+    REAL*8, DIMENSION(10000), INTENT(IN) :: xx
+    REAL*8, DIMENSION(10000) :: vi
     REAL*8, INTENT(OUT) :: v
     INTRINSIC SIN
     INTRINSIC ABS
@@ -105,7 +105,7 @@ CONTAINS
     REAL*8 :: abs1
     REAL*8 :: max2
 !$OMP PARALLEL DO DEFAULT(shared), PRIVATE(i), SCHEDULE(static)
-    DO i=1,10
+    DO i=1,10000
       IF (xx(i)**2 + xx(i)**3 .GE. 0) THEN
 ! sin function
         vi(i) = SIN(xx(i))
